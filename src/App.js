@@ -10,6 +10,7 @@ import Search from './pages/Search';
 import { createUser } from './services/userAPI';
 
 import Header from './components/Header';
+import Navigation from './components/Navigation';
 import Loading from './components/Loading';
 
 class App extends React.Component {
@@ -39,34 +40,37 @@ class App extends React.Component {
     const { name } = target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     this.setState({ [name]: value });
-    console.log(name, value);
   }
 
   render() {
-    const { isUserLogged } = this.state;
+    const { isUserLogged, isLoading } = this.state;
     return (
-      <Switch>
-        { isUserLogged ? (
-          <Redirect to="/search" />
-        ) : (
-          <Route
-            exact
-            path="/"
-            render={ () => (
-              <Login
-                { ...this.state }
-              />
-            ) }
-          />
-        )}
+      <section>
+        <Header />
+        { isLoading ? <Loading /> : <Navigation />}
+        <Switch>
+          { isUserLogged ? (
+            <Redirect to="/search" />
+          ) : (
+            <Route
+              exact
+              path="/"
+              render={ () => (
+                <Login
+                  { ...this.state }
+                />
+              ) }
+            />
+          )}
 
-        <Route path="/search" component={ Search } />
-        <Route path="/album/:id" component={ Album } />
-        <Route path="/favorites" component={ Favorites } />
-        <Route exact path="/profile" component={ Profile } />
-        <Route path="/profile/edit" component={ ProfileEdit } />
-        <Route path="*" component={ NotFound } />
-      </Switch>
+          <Route path="/search" component={ Search } />
+          <Route path="/album/:id" component={ Album } />
+          <Route path="/favorites" component={ Favorites } />
+          <Route exact path="/profile" component={ Profile } />
+          <Route path="/profile/edit" component={ ProfileEdit } />
+          <Route path="*" component={ NotFound } />
+        </Switch>
+      </section>
     );
   }
 }
