@@ -10,7 +10,6 @@ import Search from './pages/Search';
 import { createUser } from './services/userAPI';
 
 import Header from './components/Header';
-import Navigation from './components/Navigation';
 import Loading from './components/Loading';
 
 class App extends React.Component {
@@ -46,8 +45,7 @@ class App extends React.Component {
     const { isUserLogged, isLoading } = this.state;
     return (
       <section>
-        <Header />
-        { isLoading ? <Loading /> : <Navigation />}
+        { isLoading ? <Loading /> : <Header />}
         <Switch>
           { isUserLogged ? (
             <Redirect to="/search" />
