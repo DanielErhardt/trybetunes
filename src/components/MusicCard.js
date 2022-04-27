@@ -14,19 +14,21 @@ class MusicCard extends React.Component {
 
   handleFavoriteCheckbox = async ({ target }) => {
     const { checked } = target;
+    const { song, updateFavorites } = this.props;
     this.setState({ isLoading: true });
 
     if (checked) {
-      await addSong(this.props);
+      await addSong(song);
     } else {
-      await removeSong(this.props);
+      await removeSong(song);
     }
-
+    await updateFavorites();
     this.setState({ isLoading: false });
   }
 
   render() {
-    const { previewUrl, trackName, trackId } = this.props;
+    const { song, isFavorite } = this.props;
+    const { previewUrl, trackName, trackId } = song;
     const { isLoading } = this.state;
     return (
       <div>
@@ -40,6 +42,7 @@ class MusicCard extends React.Component {
           <input
             id={ trackId }
             type="checkbox"
+            checked={ isFavorite }
             data-testid={ `checkbox-music-${trackId}` }
             onChange={ this.handleFavoriteCheckbox }
           />
@@ -50,9 +53,13 @@ class MusicCard extends React.Component {
 }
 
 MusicCard.propTypes = {
-  previewUrl: PropTypes.string.isRequired,
-  trackName: PropTypes.string.isRequired,
-  trackId: PropTypes.number.isRequired,
+  song: PropTypes.shape({
+    previewUrl: PropTypes.string.isRequired,
+    trackName: PropTypes.string.isRequired,
+    trackId: PropTypes.number.isRequired,
+  }).isRequired,
+  isFavorite: PropTypes.bool.isRequired,
+  updateFavorites: PropTypes.func.isRequired,
 };
 
 export default MusicCard;

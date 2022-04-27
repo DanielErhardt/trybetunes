@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import getMusics from '../services/musicsAPI';
 import Loading from '../components/Loading';
 import MusicCard from '../components/MusicCard';
+import { getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
 
 class Album extends React.Component {
   constructor() {
@@ -13,11 +14,23 @@ class Album extends React.Component {
       artist: '',
       album: '',
       musicList: [],
+      favoriteSongs: [],
     };
   }
 
   componentDidMount() {
     this.fetchMusics();
+    this.fetchFavorites();
+  }
+
+  fetchFavorites = async () => {
+    this.setState({ isLoading: true });
+    const fetchedFavorites = await getFavoriteSongs();
+    this.setState({
+      isLoading: false,
+      favoriteSongs: fetchedFavorites,
+    });
+    console.log('fetch');
   }
 
   fetchMusics = async () => {
@@ -31,6 +44,16 @@ class Album extends React.Component {
       artist: artistName,
       album: collectionName,
     });
+  }
+
+  isSongFavorite = (song) => {
+    const { favoriteSongs } = this.state;
+    return favoriteSongs.some((s) => s.trackId === song.trackId);
+  }
+
+  clearFavorites = async () => {
+    const favorites = await getFavoriteSongs();
+    favorites.forEach((s) => removeSong(s));
   }
 
   render() {
@@ -51,7 +74,9 @@ class Album extends React.Component {
           musicList.map((music) => (
             <MusicCard
               key={ music.trackId }
-              { ...music }
+              song={ music }
+              updateFavorites={ this.fetchFavorites }
+              isFavorite={ this.isSongFavorite(music) }
             />
           ))
         )}
