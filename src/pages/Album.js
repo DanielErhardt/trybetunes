@@ -41,7 +41,6 @@ class Album extends React.Component {
       musicList,
     } = this.state;
 
-    console.log(musicList);
     return (
       <div data-testid="page-album">
         <p data-testid="artist-name">{`Artist Name: ${artist}`}</p>
