@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-class Album extends React.Component {
+class AlbumCard extends React.Component {
   render() {
     const { artistName, collectionName } = this.props;
     return (
@@ -19,9 +19,9 @@ class Album extends React.Component {
   }
 }
 
-Album.propTypes = {
+AlbumCard.propTypes = {
   artistName: PropTypes.string.isRequired,
   collectionName: PropTypes.string.isRequired,
 };
 
-export default Album;
+export default AlbumCard;

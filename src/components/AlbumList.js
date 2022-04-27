@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Album from './Album';
+import AlbumCard from './AlbumCard';
 
 class AlbumList extends React.Component {
   render() {
@@ -15,7 +15,7 @@ class AlbumList extends React.Component {
             key={ album.collectionId }
             data-testid={ `link-to-album-${album.collectionId}` }
           >
-            <Album { ...album } />
+            <AlbumCard { ...album } />
           </Link>
         ))}
       </section>
